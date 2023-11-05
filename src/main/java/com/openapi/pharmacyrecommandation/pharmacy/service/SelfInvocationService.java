@@ -16,12 +16,12 @@ import java.util.List;
 public class SelfInvocationService {
     private final PharmacyRepository pharmacyRepository;
 
+    @Transactional
     public void bar(List<Pharmacy> pharmacies) {
         log.info("bar CurrentTransactionName: {}", TransactionSynchronizationManager.getCurrentTransactionName());
         foo(pharmacies);
     }
 
-    @Transactional
     public void foo(List<Pharmacy> pharmacies) {
         log.info("foo CurrentTransactionName: {}", TransactionSynchronizationManager.getCurrentTransactionName());
 

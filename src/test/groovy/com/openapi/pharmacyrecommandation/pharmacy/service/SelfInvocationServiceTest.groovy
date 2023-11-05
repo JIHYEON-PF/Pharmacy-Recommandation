@@ -36,6 +36,6 @@ class SelfInvocationServiceTest extends AbstractIntegrationContainerBaseTest {
         then:
         def exception = thrown(RuntimeException.class);
         def result = pharmacyRepository.findAll();
-        result.size() == 1;
+        result.size() == 0;
     }
 }
