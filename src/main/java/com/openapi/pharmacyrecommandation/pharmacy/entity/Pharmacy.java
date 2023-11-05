@@ -1,5 +1,6 @@
 package com.openapi.pharmacyrecommandation.pharmacy.entity;
 
+import com.openapi.pharmacyrecommandation.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "pharmacy")
-public class Pharmacy {
+public class Pharmacy extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
