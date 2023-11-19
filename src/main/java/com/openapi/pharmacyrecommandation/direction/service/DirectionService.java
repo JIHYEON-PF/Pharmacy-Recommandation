@@ -1,12 +1,16 @@
 package com.openapi.pharmacyrecommandation.direction.service;
 
 import com.openapi.pharmacyrecommandation.api.dto.DocumentDto;
+import com.openapi.pharmacyrecommandation.api.service.KakaoCategorySearchService;
 import com.openapi.pharmacyrecommandation.direction.entity.Direction;
+import com.openapi.pharmacyrecommandation.direction.reposiitory.DirectionRepository;
 import com.openapi.pharmacyrecommandation.pharmacy.entity.dto.PharmacyDto;
 import com.openapi.pharmacyrecommandation.pharmacy.service.PharmacySearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,6 +23,9 @@ import java.util.stream.Collectors;
 @Service
 public class DirectionService {
     private final PharmacySearchService pharmacySearchService;
+    private final KakaoCategorySearchService kakaoCategorySearchService;
+    private final DirectionRepository directionRepository;
+
     private static final double earthRadius = 6371;
     private static final int MAX_SEARCH_COUNT = 3;
     private static final double RADIUS_KM = 10.0;
@@ -47,5 +54,28 @@ public class DirectionService {
         lon2 = Math.toRadians(lon2);
 
         return earthRadius * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));
+    }
+
+    public List<Direction> buildDirectionListByCategoryApi(DocumentDto inputDocumentDto) {
+        if (Objects.isNull(inputDocumentDto)) {
+            return Collections.emptyList();
+        }
+
+        return kakaoCategorySearchService
+                .requestPharmacyCategorySearch(inputDocumentDto.getLatitude(), inputDocumentDto.getLongitude(), RADIUS_KM)
+                .getDocuments().stream()
+                .map(resultDocumentDto -> Direction.createDirection(inputDocumentDto, resultDocumentDto))
+                .limit(MAX_SEARCH_COUNT)
+                .collect(Collectors.toList());
+
+    }
+
+    @Transactional
+    public List<Direction> saveAll(List<Direction> directions) {
+        if (CollectionUtils.isEmpty(directions)) {
+            return Collections.emptyList();
+        }
+
+        return directionRepository.saveAll(directions);
     }
 }

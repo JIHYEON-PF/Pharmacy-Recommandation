@@ -45,4 +45,17 @@ public class Direction {
                 .distance(distance)
                 .build();
     }
+
+    public static Direction createDirection(DocumentDto inputDocumentDto, DocumentDto resultDocumentDto) {
+        return Direction.builder()
+                .inputAddress(inputDocumentDto.getAddressName())
+                .inputLatitude(inputDocumentDto.getLatitude())
+                .inputLongitude(inputDocumentDto.getLongitude())
+                .targetPharmacyName(resultDocumentDto.getPlaceName())
+                .targetAddress(resultDocumentDto.getAddressName())
+                .targetLatitude(resultDocumentDto.getLatitude())
+                .targetLongitude(resultDocumentDto.getLongitude())
+                .distance(resultDocumentDto.getDistance() * 0.001)
+                .build();
+    }
 }
