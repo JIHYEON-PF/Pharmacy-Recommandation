@@ -1,13 +1,15 @@
 package com.openapi.pharmacyrecommandation.direction.service
 
 import com.openapi.pharmacyrecommandation.api.dto.DocumentDto
+import com.openapi.pharmacyrecommandation.api.service.KakaoCategorySearchService
 import com.openapi.pharmacyrecommandation.pharmacy.entity.dto.PharmacyDto
 import com.openapi.pharmacyrecommandation.pharmacy.service.PharmacySearchService
 import spock.lang.Specification
 
 class DirectionServiceTest extends Specification {
     private PharmacySearchService pharmacySearchService = Mock();
-    private DirectionService directionService = new DirectionService(pharmacySearchService);
+    private KakaoCategorySearchService kakaoCategorySearchService = Mock();
+    private DirectionService directionService = new DirectionService(pharmacySearchService, kakaoCategorySearchService, null);
 
     private List<PharmacyDto> pharmacyDtoList;
 
