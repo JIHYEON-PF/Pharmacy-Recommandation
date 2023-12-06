@@ -40,6 +40,9 @@ dependencies {
     // database
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
+    // handlebars
+    implementation 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.4'
+
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // test - spock
